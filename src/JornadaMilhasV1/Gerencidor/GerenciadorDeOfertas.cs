@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JornadaMilhasV1.Gerencidor;
+namespace JornadaMilhasV1.Gerenciador;
 public class GerenciadorDeOfertas
 {
-    private List<OfertaViagem> ofertaViagem = new List<OfertaViagem>();
+    private List<OfertaViagem> ofertasViagem = new List<OfertaViagem>();
 
-    public GerenciadorDeOfertas(List<OfertaViagem> ofertaViagem)
+    public GerenciadorDeOfertas(List<OfertaViagem> ofertasViagem)
     {
-        this.ofertaViagem = ofertaViagem;
+        this.ofertasViagem = ofertasViagem;
     }
 
     public void CadastrarOferta()
@@ -58,7 +58,7 @@ public class GerenciadorDeOfertas
     {
         if (ofertaCadastrada != null)
         {
-            ofertaViagem.Add(ofertaCadastrada);
+            ofertasViagem.Add(ofertaCadastrada);
             return true;
         }
         return false;
@@ -76,9 +76,15 @@ public class GerenciadorDeOfertas
     public void ExibirTodasAsOfertas()
     {
         Console.WriteLine("\nTodas as ofertas cadastradas: ");
-        foreach (var oferta in ofertaViagem)
+        foreach (var oferta in ofertasViagem)
         {
             Console.WriteLine(oferta);
         }
     }
+
+    public OfertaViagem? RecuperaMaiorDesconto(Func<OfertaViagem, bool> filtro) => ofertasViagem
+        .Where(filtro)
+        .Where(o => o.Ativa)
+        .OrderBy(o => o.Preco)
+        .FirstOrDefault();
 }
